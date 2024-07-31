@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
+      POSTGRES_DB: postgres
+    networks:
+      - odoo_network
+
+  odoo:
+    image: odoo:17.0
+    ports:
+      - "8069:8069"
+    depends_on:
+      - db
+    environment:
+      - GITHUB_PAT=${GITHUB_TOKEN}
+    command: >
+      bash -c "echo 'Sleeping some 15 seconds to allow postgres to wake-up' &&
+      sleep 15 &&
+      echo 'Waking up instance: odoo -c /etc/odoo/odoo.conf -d ${DATABASE_NAME} --logfile=/var/log/odoo/odoo-server.log --workers=0 --max-cron-threads=0 --limit-time-real 99999' &&
+      /mnt/community-addons/odoo-bin -c /etc/odoo/odoo.conf -d ${DATABASE_NAME} --logfile=/var/log/odoo/odoo-server.log --workers=0 --max-cron-threads=0 --limit-time-real 99999 | tee /mnt/tmp/odoo-server-${DATABASE_NAME}.log"
+    volumes:
+      # Odoo RMS addons
+      - /opt/odoo/git_repositories/rms-addons:/mnt/rms-addons
+      # In the same folder where the docker-compose file is located, there should be a odoo.conf file
+      - ./odoo.conf:/etc/odoo/odoo.conf
+    networks:
+      - odoo_network
+
+networks:
+  odoo_network:
+    driver: bridge

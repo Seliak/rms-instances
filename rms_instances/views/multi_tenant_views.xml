@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_multi_tenant_instance_tree" model="ir.ui.view">
+        <field name="name">multi.tenant.instance.tree</field>
+        <field name="model">multi.tenant.instance</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="email"/>
+                <field name="instance_url"/>
+                <field name="instance_port"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_multi_tenant_instance_form" model="ir.ui.view">
+        <field name="name">multi.tenant.instance.form</field>
+        <field name="model">multi.tenant.instance</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="email"/>
+                        <field name="instance_url"/>
+                        <field name="instance_port"/>
+                        <field name="state"/>
+                        <field name="logs"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <menuitem id="menu_multi_tenant" name="Multi-Tenant" sequence="10"/>
+    <menuitem id="menu_multi_tenant_instances" name="Instances" parent="menu_multi_tenant" action="action_multi_tenant_instance"/>
+
+    <record id="action_multi_tenant_instance" model="ir.actions.act_window">
+        <field name="name">Instances</field>
+        <field name="res_model">multi.tenant.instance</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

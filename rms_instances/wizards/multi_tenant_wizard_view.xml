@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_multi_tenant_wizard_form" model="ir.ui.view">
+        <field name="name">multi.tenant.wizard.form</field>
+        <field name="model">multi.tenant.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Create Multi-Tenant Instance">
+                <group>
+                    <field name="email"/>
+                </group>
+                <footer>
+                    <button string="Create" type="object" name="create_instance" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_multi_tenant_wizard" model="ir.actions.act_window">
+        <field name="name">Create Multi-Tenant Instance</field>
+        <field name="res_model">multi.tenant.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
